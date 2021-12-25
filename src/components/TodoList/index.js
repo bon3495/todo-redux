@@ -1,22 +1,64 @@
-import { Col, Row, Input, Button, Select, Tag } from 'antd';
-import Todo from '../Todo';
+import { Button, Col, Input, Row, Select, Tag } from 'antd';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { addTodo, changeStatusTodo } from '../../store/actions';
+import { todosRemainingSelector } from '../../store/selectors';
+import Todo from '../Todo';
 
 export default function TodoList() {
-  const [todoName, setTodoName] = useState('');
-  const [priority, setPriority] = useState('Medium');
+  const dispatch = useDispatch();
+  const todoList = useSelector(todosRemainingSelector);
+  const [enteredInput, setEnteredInput] = useState('');
+  const [selectedPriority, setSelectedPriority] = useState('Medium');
+
+  const handleEnteredChange = e => {
+    setEnteredInput(e.target.value);
+  };
+
+  const handleSelectedChange = prioriry => {
+    setSelectedPriority(prioriry);
+  };
+
+  const handleAddTodoClick = () => {
+    dispatch(
+      addTodo({
+        id: uuidv4(),
+        name: enteredInput,
+        priority: selectedPriority,
+        completed: false,
+      })
+    );
+    setEnteredInput('');
+    setSelectedPriority('Medium');
+  };
+
+  const handleChangeStatus = id => {
+    dispatch(changeStatusTodo(id));
+  };
 
   return (
     <Row style={{ height: 'calc(100% - 40px)' }}>
       <Col span={24} style={{ height: 'calc(100% - 40px)', overflowY: 'auto' }}>
-        <Todo name="Learn Yoga" prioriry="Medium" completed={true} />
-        <Todo name="Learn Redux" prioriry="High" completed={false} />
-        <Todo name="Learn React" prioriry="Low" completed={false} />
+        {todoList.map(todo => (
+          <Todo
+            name={todo.name}
+            prioriry={todo.priority}
+            completed={todo.completed}
+            id={todo.id}
+            key={todo.id}
+            onChangeStatus={handleChangeStatus}
+          />
+        ))}
       </Col>
       <Col span={24}>
         <Input.Group style={{ display: 'flex' }} compact>
-          <Input value={todoName} />
-          <Select defaultValue="Medium" value={priority}>
+          <Input value={enteredInput} onChange={handleEnteredChange} />
+          <Select
+            defaultValue="Medium"
+            value={selectedPriority}
+            onChange={handleSelectedChange}
+          >
             <Select.Option value="High" label="High">
               <Tag color="red">High</Tag>
             </Select.Option>
@@ -27,7 +69,9 @@ export default function TodoList() {
               <Tag color="gray">Low</Tag>
             </Select.Option>
           </Select>
-          <Button type="primary">Add</Button>
+          <Button type="primary" onClick={handleAddTodoClick}>
+            Add
+          </Button>
         </Input.Group>
       </Col>
     </Row>
