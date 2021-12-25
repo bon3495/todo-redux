@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 const initialState = [
   {
     id: 1,
@@ -19,19 +21,35 @@ const initialState = [
   },
 ];
 
-const todoListReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'todoList/addTodo':
-      return [...state, action.payload];
+// const todoListReducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case 'todoList/addTodo':
+//       return [...state, action.payload];
 
-    case 'todoList/changeStatusTodo':
-      const newState = [...state];
-      const todo = newState.find(t => t.id === action.payload);
-      todo.completed = !todo.completed;
-      return [...newState];
-    default:
-      return state;
-  }
-};
+//     case 'todoList/changeStatusTodo':
+//       const newState = [...state];
+//       const todo = newState.find(t => t.id === action.payload);
+//       todo.completed = !todo.completed;
+//       return [...newState];
+//     default:
+//       return state;
+//   }
+// };
 
-export default todoListReducer;
+const todoListSlice = createSlice({
+  name: 'todoList',
+  initialState,
+  reducers: {
+    addTodo(state, action) {
+      state.push(action.payload);
+    },
+    changeStatusTodo(state, action) {
+      const currentTodo = state.find(todo => todo.id === action.payload);
+      currentTodo.completed = !currentTodo.completed;
+    },
+  },
+});
+
+export const { addTodo, changeStatusTodo } = todoListSlice.actions;
+
+export default todoListSlice.reducer;
