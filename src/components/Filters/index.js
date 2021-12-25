@@ -5,7 +5,7 @@ import {
   prioritiesFilterChange,
   searchFilterChange,
   statusFilterChange,
-} from './FiltersSlice';
+} from './filtersSlice';
 
 const { Search } = Input;
 

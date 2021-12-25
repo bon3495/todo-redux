@@ -45,7 +45,7 @@ const todoListSlice = createSlice({
     },
     changeStatusTodo(state, action) {
       const currentTodo = state.find(todo => todo.id === action.payload);
-      currentTodo.completed = !currentTodo.completed;
+      if (currentTodo) currentTodo.completed = !currentTodo.completed;
     },
   },
 });

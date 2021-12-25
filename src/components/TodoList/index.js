@@ -2,7 +2,7 @@ import { Button, Col, Input, Row, Select, Tag } from 'antd';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { addTodo, changeStatusTodo } from './TodosSlice';
+import { addTodo, changeStatusTodo } from './todosSlice';
 import { todosRemainingSelector } from '../../store/selectors';
 import Todo from '../Todo';
 

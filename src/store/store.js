@@ -7,8 +7,8 @@
 // const store = createStore(rootReducer, composedEnhancers);
 
 import { configureStore } from '@reduxjs/toolkit';
-import filtersReducer from '../components/Filters/FiltersSlice';
-import todoListReducer from '../components/TodoList/TodosSlice';
+import filtersReducer from '../components/Filters/filtersSlice';
+import todoListReducer from '../components/TodoList/todosSlice';
 
 const store = configureStore({
   reducer: {
